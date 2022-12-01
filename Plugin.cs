@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -40,6 +39,12 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         int scoreindex = Scores[letterscore];
         int coins = getTootsNum(scorepercentage);
 
+        // setting these variables just in case other mods are using them lol
+        __instance.totalscore = totalscore;
+        __instance.scorepercentage = scorepercentage;
+        __instance.letterscore = letterscore;
+        __instance.scoreindex = scoreindex;
+
         __instance.txt_trackname.text = GlobalVariables.chosen_track_data.trackname_long;
         __instance.txt_prevhigh.text = SaverLoader.grabHighestScore(GlobalVariables.chosen_track_data.trackref).ToString("n0");
         __instance.scorecountertext.text = totalscore.ToString("n0");
@@ -68,10 +73,9 @@ public class PointSceneControllerStartPatch : MonoBehaviour
             __instance.confettic.startConfetti();
         }
 
-        __instance.GetType().GetMethod("startAnims", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { });
-        __instance.GetType().GetMethod("checkScoreCheevos", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { });
-        //highscore accuracy mod uses this
-        __instance.GetType().GetMethod("doneWithCountUp", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[] { });
+        __instance.startAnims();
+        __instance.checkScoreCheevos();
+        __instance.doneWithCountUp(); //highscore accuracy mod uses this
         return false;
     }
 

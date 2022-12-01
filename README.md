@@ -8,5 +8,8 @@
 - Place the .dll in `<TromboneChampDir>/BepInEx/plugins`
 
 ## Changelog
+v1.0.1
+- Fix for TootTally
+
 v1.0.0
 - Get your score without waiting for animations
