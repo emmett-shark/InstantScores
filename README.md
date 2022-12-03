@@ -8,6 +8,9 @@
 - Place the .dll in `<TromboneChampDir>/BepInEx/plugins`
 
 ## Changelog
+v1.0.2
+- Compatibility with AutoToot and HoverToot
+
 v1.0.1
 - Fix for TootTally
 

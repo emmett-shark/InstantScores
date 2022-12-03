@@ -30,6 +30,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
     
     static bool Prefix(PointSceneController __instance, ref AudioSource[] ___sfx)
     {
+        GlobalVariables.localsave.tracks_played++;
         Plugin.Log.LogDebug("Starting PointSceneController");
         ___sfx = __instance.sfxholder.GetComponents<AudioSource>();
 
@@ -37,7 +38,6 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         float scorepercentage = GlobalVariables.gameplay_scoreperc;
         string letterscore = getLetterScore(scorepercentage);
         int scoreindex = Scores[letterscore];
-        int coins = getTootsNum(scorepercentage);
 
         // setting these variables just in case other mods are using them lol
         __instance.totalscore = totalscore;
@@ -50,7 +50,6 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         __instance.scorecountertext.text = totalscore.ToString("n0");
         __instance.giantscoretext.text = letterscore;
         __instance.giantscoretextshad.text = letterscore;
-        __instance.tootstext.text = "EARNED " + coins.ToString() + " TOOTS";
 
         __instance.txt_nasties.text = GlobalVariables.gameplay_notescores[0].ToString("n0");
         __instance.txt_mehs.text = GlobalVariables.gameplay_notescores[1].ToString("n0");
@@ -62,11 +61,6 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         __instance.wallbreak.SetActive(scorepercentage > 1.35f);
         __instance.screenfade.SetActive(false); // otherwise this makes a weird diagonal line
 
-        SaverLoader.checkForUpdatedScore(GlobalVariables.chosen_track_data.trackref, totalscore, letterscore);
-        GlobalVariables.localsave.tracks_played++;
-        GlobalVariables.localsave.currency_toots += coins;
-        SaverLoader.updateSavedGame();
-
         if (scoreindex > 3)
         {
             __instance.confettic.setUpConfetti();
@@ -75,6 +69,8 @@ public class PointSceneControllerStartPatch : MonoBehaviour
 
         __instance.startAnims();
         __instance.checkScoreCheevos();
+        __instance.updateSave();
+        __instance.doCoins(); // autotoot mod uses this
         __instance.doneWithCountUp(); //highscore accuracy mod uses this
         return false;
     }
@@ -120,21 +116,23 @@ public class PointSceneControllerStartPatch : MonoBehaviour
     private static Vector3 getDotSpacing(int i) => new Vector3((float)(trackxpos - num + trackdotspacing * i), -trackypos + num, 0.0f);
 
     private static string getLetterScore(float scorepercentage) => scorepercentage < 1f ? (scorepercentage < 0.8f ? (scorepercentage < 0.6f ? (scorepercentage < 0.4f ? (scorepercentage < 0.2f ? "F" : "D") : "C") : "B") : "A") : "S";
-    
-    private static int getTootsNum(float scorepercentage)
-    {
-        int difficulty = GlobalVariables.chosen_track_data.difficulty;
-        int length = GlobalVariables.chosen_track_data.length;
-        float difficultyMod = difficulty > 4 ? 1.04f : 1f;
-        float lengthMod = length > 90 ? (length - 90) * 0.007f + 1f : 1f;
-        int total = Mathf.Max(0, Mathf.FloorToInt(scorepercentage * 375f * difficultyMod * lengthMod));
-        Plugin.Log.LogDebug($"new toots: {total}");
-        return total;
-    }
+}
+
+[HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doCoins))]
+public class PointSceneControllerUpdateSavePatch : MonoBehaviour
+{
+    static bool Prefix() => false;
 }
 
 [HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doneWithCountUp))]
 public class PointSceneControllerDoneWithCountUpPatch : MonoBehaviour
+{
+    static bool Prefix() => false;
+}
+
+// autotoot annoyingly calls this to animate the continue and replay buttons
+[HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.showContinue))]
+public class PointSceneControllerShowContinuePatch : MonoBehaviour
 {
     static bool Prefix() => false;
 }
