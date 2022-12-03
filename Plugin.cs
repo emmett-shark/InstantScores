@@ -121,7 +121,11 @@ public class PointSceneControllerStartPatch : MonoBehaviour
 [HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doCoins))]
 public class PointSceneControllerUpdateSavePatch : MonoBehaviour
 {
-    static bool Prefix() => false;
+    static bool Prefix(PointSceneController __instance)
+    {
+        __instance.tootstext.text = "EARNED " + __instance.getTootsNum().ToString() + " TOOTS";
+        return false;
+    }
 }
 
 [HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doneWithCountUp))]
