@@ -8,6 +8,9 @@
 - Place the .dll in `<TromboneChampDir>/BepInEx/plugins`
 
 ## Changelog
+v1.0.4
+- Fix displaying total toots for TC 1.0881
+
 v1.0.3
 - Fix bug in displaying toots
 

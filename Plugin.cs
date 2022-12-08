@@ -124,6 +124,7 @@ public class PointSceneControllerUpdateSavePatch : MonoBehaviour
     static bool Prefix(PointSceneController __instance)
     {
         __instance.tootstext.text = "EARNED " + __instance.getTootsNum().ToString() + " TOOTS";
+        __instance.totaltootstext.text = GlobalVariables.localsave.currency_toots.ToString("n0");
         return false;
     }
 }
