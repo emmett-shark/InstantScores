@@ -28,11 +28,11 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         { "F", 0 }, { "D", 1 }, { "C", 2 }, { "B", 3 }, { "A", 4 }, { "S", 5 }
     };
     
-    static bool Prefix(PointSceneController __instance, ref AudioSource[] ___sfx)
+    static bool Prefix(PointSceneController __instance)
     {
         GlobalVariables.localsave.tracks_played++;
         Plugin.Log.LogDebug("Starting PointSceneController");
-        ___sfx = __instance.sfxholder.GetComponents<AudioSource>();
+        __instance.sfx = __instance.sfxholder.GetComponents<AudioSource>();
 
         int totalscore = GlobalVariables.gameplay_scoretotal;
         float scorepercentage = GlobalVariables.gameplay_scoreperc;
@@ -47,7 +47,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
 
         __instance.txt_trackname.text = GlobalVariables.chosen_track_data.trackname_long;
         __instance.txt_prevhigh.text = SaverLoader.grabHighestScore(GlobalVariables.chosen_track_data.trackref).ToString("n0");
-        __instance.scorecountertext.text = totalscore.ToString("n0");
+        __instance.txt_score.text = totalscore.ToString("n0");
         __instance.giantscoretext.text = letterscore;
         __instance.giantscoretextshad.text = letterscore;
 
@@ -59,7 +59,13 @@ public class PointSceneControllerStartPatch : MonoBehaviour
 
         setTrackPositions(__instance, scorepercentage, scoreindex);
         __instance.wallbreak.SetActive(scorepercentage > 1.35f);
-        __instance.screenfade.SetActive(false); // otherwise this makes a weird diagonal line
+
+        for (int index = 0; index < 4; ++index)
+        {
+            __instance.track_arrows_objs[index].SetActive(false);
+            __instance.txt_scores_mp[index].gameObject.SetActive(false);
+            __instance.txt_scorelabels_mp[index].gameObject.SetActive(false);
+        }
 
         if (scoreindex > 3)
         {
@@ -70,8 +76,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         __instance.startAnims();
         __instance.checkScoreCheevos();
         __instance.updateSave();
-        __instance.doCoins(); // autotoot mod uses this
-        __instance.doneWithCountUp(); //highscore accuracy mod uses this
+        __instance.doCoins();
         return false;
     }
 
@@ -92,7 +97,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         for (int i = 0; i < Scores.Count; i++)
         {
             var trackDot = getChild<RectTransform>(__instance.trackobj.transform, i + 3);
-            trackDot.anchoredPosition3D = getDotSpacing(i);
+            trackDot.anchoredPosition3D = new Vector3((float)(trackxpos - num + trackdotspacing * i), -trackypos + num, 0.0f);
             if (i <= scoreindex)
             {
                 var image = getChild<Image>(__instance.trackobj.transform, i + 3);
@@ -113,31 +118,23 @@ public class PointSceneControllerStartPatch : MonoBehaviour
 
     private static T getChild<T>(Transform transform, int i) => transform.GetChild(i).gameObject.GetComponent<T>();
 
-    private static Vector3 getDotSpacing(int i) => new Vector3((float)(trackxpos - num + trackdotspacing * i), -trackypos + num, 0.0f);
-
     private static string getLetterScore(float scorepercentage) => scorepercentage < 1f ? (scorepercentage < 0.8f ? (scorepercentage < 0.6f ? (scorepercentage < 0.4f ? (scorepercentage < 0.2f ? "F" : "D") : "C") : "B") : "A") : "S";
-}
 
-[HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doCoins))]
-public class PointSceneControllerUpdateSavePatch : MonoBehaviour
-{
-    static bool Prefix(PointSceneController __instance)
+    [HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doCoins))]
+    public class PointSceneControllerDoCoinsPatch : MonoBehaviour
     {
-        __instance.tootstext.text = "EARNED " + __instance.getTootsNum().ToString() + " TOOTS";
-        __instance.totaltootstext.text = GlobalVariables.localsave.currency_toots.ToString("n0");
-        return false;
+        static bool Prefix(PointSceneController __instance)
+        {
+            __instance.tootstext.text = "EARNED " + __instance.getTootsNum().ToString() + " TOOTS";
+            __instance.totaltootstext.text = GlobalVariables.localsave.currency_toots.ToString("n0");
+            return false;
+        }
     }
-}
 
-[HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.doneWithCountUp))]
-public class PointSceneControllerDoneWithCountUpPatch : MonoBehaviour
-{
-    static bool Prefix() => false;
-}
-
-// autotoot annoyingly calls this to animate the continue and replay buttons
-[HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.showContinue))]
-public class PointSceneControllerShowContinuePatch : MonoBehaviour
-{
-    static bool Prefix() => false;
+    // autotoot annoyingly calls this to animate the continue and replay buttons
+    [HarmonyPatch(typeof(PointSceneController), nameof(PointSceneController.showContinue))]
+    public class PointSceneControllerShowContinuePatch : MonoBehaviour
+    {
+        static bool Prefix() => false;
+    }
 }
