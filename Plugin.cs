@@ -59,6 +59,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
 
         setTrackPositions(__instance, scorepercentage, scoreindex);
         __instance.wallbreak.SetActive(scorepercentage > 1.35f);
+        __instance.scorepopupcamera.SetActive(false); // why is the graph open by default now
 
         for (int index = 0; index < 4; ++index)
         {

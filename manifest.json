@@ -1,7 +1,7 @@
 {
     "name": "InstantScores",
     "description": "Trombone Champ instant score screen",
-    "version_number": "1.0.4",
+    "version_number": "1.0.5",
     "dependencies": [
       "BepInEx-BepInExPack_TromboneChamp-5.4.21"
     ],
