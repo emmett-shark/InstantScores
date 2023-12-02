@@ -32,6 +32,8 @@ public class PointSceneControllerStartPatch : MonoBehaviour
     {
         GlobalVariables.localsave.tracks_played++;
         Plugin.Log.LogDebug("Starting PointSceneController");
+        var perfect = GameObject.Find("Canvas/Perfect");
+        Destroy(perfect);
         __instance.sfx = __instance.sfxholder.GetComponents<AudioSource>();
 
         int totalscore = GlobalVariables.gameplay_scoretotal;
