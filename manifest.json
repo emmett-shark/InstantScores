@@ -1,10 +1,9 @@
 {
     "name": "InstantScores",
     "description": "Trombone Champ instant score screen",
-    "version_number": "1.0.5",
+    "version_number": "1.0.6",
     "dependencies": [
       "BepInEx-BepInExPack_TromboneChamp-5.4.21"
     ],
     "website_url": "https://github.com/emmett-shark/InstantScores/"
   }
-  

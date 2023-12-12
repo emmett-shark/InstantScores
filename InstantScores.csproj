@@ -3,13 +3,12 @@
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>InstantScores</AssemblyName>
     <Description>Trombone Champ instant scores</Description>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
     <PackageReference Include="TromboneChamp.GameLibs" Version="1.9.8" />
