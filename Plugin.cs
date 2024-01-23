@@ -34,8 +34,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         Plugin.Log.LogDebug("Starting PointSceneController");
         var perfect = GameObject.Find("Canvas/Perfect");
         Destroy(perfect);
-        var stupidLine = GameObject.Find("FadeOutCanvas");
-        Destroy(stupidLine);
+        __instance.screenfade.SetActive(false);
         __instance.sfx = __instance.sfxholder.GetComponents<AudioSource>();
 
         int totalscore = GlobalVariables.gameplay_scoretotal;
