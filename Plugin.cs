@@ -32,8 +32,9 @@ public class PointSceneControllerStartPatch : MonoBehaviour
     {
         GlobalVariables.localsave.tracks_played++;
         Plugin.Log.LogDebug("Starting PointSceneController");
-        var perfect = GameObject.Find("Canvas/Perfect");
-        Destroy(perfect);
+        Destroy(GameObject.Find("Canvas/Perfect"));
+        Destroy(GameObject.Find("Canvas/buttons/coingroup/practice_turbo_flag"));
+        Destroy(GameObject.Find("Canvas/FullPanel/LeftLabels/txt-highscore"));
         __instance.screenfade.SetActive(false);
         __instance.sfx = __instance.sfxholder.GetComponents<AudioSource>();
 
