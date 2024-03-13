@@ -8,6 +8,9 @@
 - Place the .dll in `<TromboneChampDir>/BepInEx/plugins`
 
 ## Changelog
+v.1.0.8
+- Delete localization for TC 1.20
+
 v1.0.7
 - Fix for TC 1.19E
 

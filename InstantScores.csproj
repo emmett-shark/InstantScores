@@ -3,7 +3,7 @@
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>InstantScores</AssemblyName>
     <Description>Trombone Champ instant scores</Description>
-    <Version>1.0.7</Version>
+    <Version>1.0.8</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
