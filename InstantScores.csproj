@@ -3,7 +3,7 @@
     <TargetFramework>net48</TargetFramework>
     <AssemblyName>InstantScores</AssemblyName>
     <Description>Trombone Champ instant scores</Description>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
@@ -11,12 +11,12 @@
   <ItemGroup>
     <PackageReference Include="BepInEx.Core" Version="5.*" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" />
-    <PackageReference Include="TromboneChamp.GameLibs" Version="1.9.8" />
+    <PackageReference Include="TromboneChamp.GameLibs" Version="1.25.0" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.3.11" IncludeAssets="compile" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TromboneChampDir)/BepInEx/plugins" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TromboneTootDir)/BepInEx/plugins/emmett-InstantScores" />
   </Target>
 
   <Target Name="ThunderstoreZip" AfterTargets="Build">

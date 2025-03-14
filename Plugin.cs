@@ -50,7 +50,7 @@ public class PointSceneControllerStartPatch : MonoBehaviour
         __instance.scoreindex = scoreindex;
 
         __instance.txt_trackname.text = GlobalVariables.chosen_track_data.trackname_long;
-        __instance.txt_prevhigh.text = SaverLoader.grabHighestScore(GlobalVariables.chosen_track_data.trackref).ToString("n0");
+        __instance.txt_prevhigh.text = SaverLoader.grabHighestScore(GlobalVariables.chosen_track_data).ToString("n0");
         __instance.txt_score.text = totalscore.ToString("n0");
         __instance.giantscoretext.text = letterscore;
         __instance.giantscoretextshad.text = letterscore;
